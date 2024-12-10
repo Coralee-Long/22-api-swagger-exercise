@@ -1,0 +1,887 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Forestry Management API",
+    "description": "An API to help forestry companies manage forests, trees, foresters, and their tools.\n",
+    "termsOfService": "http://forestry.com/terms/",
+    "contact": {
+      "email": "support@forestry.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.forestry.com/v1",
+      "description": "Production Server"
+    },
+    {
+      "url": "http://localhost:8080",
+      "description": "Local Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Forest",
+      "description": "Operations related to forests",
+      "externalDocs": {
+        "description": "More about forests",
+        "url": "http://forestry.com/forests/docs"
+      }
+    },
+    {
+      "name": "Tree",
+      "description": "Operations related to trees",
+      "externalDocs": {
+        "description": "More about trees",
+        "url": "http://forestry.com/trees/docs"
+      }
+    },
+    {
+      "name": "Forester",
+      "description": "Operations related to foresters",
+      "externalDocs": {
+        "description": "More about foresters",
+        "url": "http://forestry.com/foresters/docs"
+      }
+    }
+  ],
+  "paths": {
+    "/forests": {
+      "get": {
+        "tags": [
+          "Forest"
+        ],
+        "summary": "List all forests",
+        "description": "Retrieve a list of all managed forests.",
+        "operationId": "listForests",
+        "responses": {
+          "200": {
+            "description": "A list of forests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Forest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Forest"
+        ],
+        "summary": "Create a new forest",
+        "description": "Add a new forest to the management system.",
+        "operationId": "createForest",
+        "requestBody": {
+          "description": "Forest object that needs to be added",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Forest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Forest created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          }
+        }
+      }
+    },
+    "/forests/{forestId}": {
+      "get": {
+        "tags": [
+          "Forest"
+        ],
+        "summary": "Get a forest by ID",
+        "description": "Retrieve details of a specific forest.",
+        "operationId": "getForestById",
+        "parameters": [
+          {
+            "name": "forestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forest to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Forest details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forest"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Forest not found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Forest"
+        ],
+        "summary": "Update a forest",
+        "description": "Update details of an existing forest.",
+        "operationId": "updateForest",
+        "parameters": [
+          {
+            "name": "forestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forest to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated forest object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Forest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Forest updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          },
+          "404": {
+            "description": "Forest not found."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Forest"
+        ],
+        "summary": "Delete a forest",
+        "description": "Remove a forest from the management system.",
+        "operationId": "deleteForest",
+        "parameters": [
+          {
+            "name": "forestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forest to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Forest deleted successfully."
+          },
+          "404": {
+            "description": "Forest not found."
+          }
+        }
+      }
+    },
+    "/forests/{forestId}/trees": {
+      "get": {
+        "tags": [
+          "Tree"
+        ],
+        "summary": "List all trees in a forest",
+        "description": "Retrieve a list of trees within a specific forest.",
+        "operationId": "listTrees",
+        "parameters": [
+          {
+            "name": "forestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of trees.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tree"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tree"
+        ],
+        "summary": "Add a new tree to a forest",
+        "description": "Add a new tree under a specific forest.",
+        "operationId": "addTree",
+        "parameters": [
+          {
+            "name": "forestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Tree object that needs to be added",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tree"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tree added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tree"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          }
+        }
+      }
+    },
+    "/trees/{treeId}": {
+      "get": {
+        "tags": [
+          "Tree"
+        ],
+        "summary": "Get a tree by ID",
+        "description": "Retrieve details of a specific tree.",
+        "operationId": "getTreeById",
+        "parameters": [
+          {
+            "name": "treeId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the tree to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tree details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tree"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tree not found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tree"
+        ],
+        "summary": "Update a tree",
+        "description": "Update details of an existing tree.",
+        "operationId": "updateTree",
+        "parameters": [
+          {
+            "name": "treeId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the tree to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated tree object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tree"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tree updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tree"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          },
+          "404": {
+            "description": "Tree not found."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tree"
+        ],
+        "summary": "Delete a tree",
+        "description": "Remove a tree from the forest.",
+        "operationId": "deleteTree",
+        "parameters": [
+          {
+            "name": "treeId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the tree to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Tree deleted successfully."
+          },
+          "404": {
+            "description": "Tree not found."
+          }
+        }
+      }
+    },
+    "/foresters": {
+      "get": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "List all foresters",
+        "description": "Retrieve a list of all foresters.",
+        "operationId": "listForesters",
+        "responses": {
+          "200": {
+            "description": "A list of foresters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Forester"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "Create a new forester",
+        "description": "Add a new forester to the management system.",
+        "operationId": "createForester",
+        "requestBody": {
+          "description": "Forester object that needs to be added",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Forester"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Forester created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forester"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          }
+        }
+      }
+    },
+    "/foresters/{foresterId}": {
+      "get": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "Get a forester by ID",
+        "description": "Retrieve details of a specific forester.",
+        "operationId": "getForesterById",
+        "parameters": [
+          {
+            "name": "foresterId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forester to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Forester details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forester"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Forester not found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "Update a forester",
+        "description": "Update details of an existing forester.",
+        "operationId": "updateForester",
+        "parameters": [
+          {
+            "name": "foresterId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forester to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated forester object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Forester"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Forester updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forester"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          },
+          "404": {
+            "description": "Forester not found."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "Delete a forester",
+        "description": "Remove a forester from the management system.",
+        "operationId": "deleteForester",
+        "parameters": [
+          {
+            "name": "foresterId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forester to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Forester deleted successfully."
+          },
+          "404": {
+            "description": "Forester not found."
+          }
+        }
+      }
+    },
+    "/foresters/{foresterId}/forests": {
+      "get": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "List forests assigned to a forester",
+        "description": "Retrieve a list of forests managed by a specific forester.",
+        "operationId": "listForesterForests",
+        "parameters": [
+          {
+            "name": "foresterId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forester",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of forests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Forest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foresters/{foresterId}/tools": {
+      "get": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "List tools owned by a forester",
+        "description": "Retrieve a list of tools and machinery owned by a specific forester.",
+        "operationId": "listForesterTools",
+        "parameters": [
+          {
+            "name": "foresterId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forester",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of tools.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tool"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Forester"
+        ],
+        "summary": "Add a new tool to a forester",
+        "description": "Assign a new tool or machinery to a forester.",
+        "operationId": "addTool",
+        "parameters": [
+          {
+            "name": "foresterId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the forester",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Tool object that needs to be added",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tool"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tool added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tool"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Forest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "forest123"
+          },
+          "name": {
+            "type": "string",
+            "example": "Amazon Rainforest"
+          },
+          "location": {
+            "type": "string",
+            "example": "South America"
+          },
+          "area": {
+            "type": "number",
+            "format": "float",
+            "example": 5500000.5
+          },
+          "establishedDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2020-01-01"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "location",
+          "area"
+        ]
+      },
+      "Tree": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "tree456"
+          },
+          "species": {
+            "type": "string",
+            "example": "Oak"
+          },
+          "age": {
+            "type": "integer",
+            "example": 15
+          },
+          "height": {
+            "type": "number",
+            "format": "float",
+            "example": 5.5
+          },
+          "healthStatus": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "diseased",
+              "harvested"
+            ],
+            "example": "healthy"
+          },
+          "forestId": {
+            "type": "string",
+            "example": "forest123"
+          }
+        },
+        "required": [
+          "id",
+          "species",
+          "age",
+          "height",
+          "forestId"
+        ]
+      },
+      "Forester": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "forester789"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "jane.doe@forestry.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          },
+          "assignedForests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "forest123",
+              "forest456"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email"
+        ]
+      },
+      "Tool": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "tool101"
+          },
+          "name": {
+            "type": "string",
+            "example": "Chainsaw"
+          },
+          "type": {
+            "type": "string",
+            "example": "Cutting"
+          },
+          "purchaseDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2021-06-15"
+          },
+          "foresterId": {
+            "type": "string",
+            "example": "forester789"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "foresterId"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "forestry_auth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://forestry.com/oauth/authorize",
+            "tokenUrl": "https://forestry.com/oauth/token",
+            "scopes": {
+              "manage:forests": "Manage forests and trees",
+              "read:forests": "Read forest and tree data"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "X-API-KEY",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "forestry_auth": [
+        "manage:forests",
+        "read:forests"
+      ]
+    },
+    {
+      "api_key": []
+    }
+  ]
+}
